@@ -10,8 +10,6 @@ Aby uruchomić projekt, potrzebujesz:
 
 - ✅ **Python 3.8+** *(zalecana instalacja przez Anaconda)*
 - ✅ **pip** *(zazwyczaj dołączony do Pythona)*
-- ✅ **git** *(https://git-scm.com/downloads)*
-- ✅ **ffmpeg** *(https://ffmpeg.org/download.html)*
 - ✅ **Anaconda** *(https://www.anaconda.com/download)*
 
 > 💡 Zalecana instalacja przez Anacondę zapewnia łatwe zarządzanie środowiskami i zależnościami.
