@@ -76,4 +76,18 @@ python main.py
 Po uruchomieniu, program poprosi o podanie ścieżki do zdjęcia.
 Zostanie ono automatycznie pokolorowane i zapisane w folderze wynikowym.
 
+## Podstawowe GUI
 
+Aby uruchomić GUI które stworzyłem:
+
+### 1. Dociągnij wymagane biblioteki:
+```bash
+pip install tkinterdnd2 pillow
+```
+
+---
+
+### 2. Uruchom aplikacje:
+```bash
+python front.py
+```
