@@ -9,12 +9,19 @@ def is_package_inst(name):
 is_array = False
 
 packages_required = ["fastai","torch"]
+render_factor = 20
+
 if len(sys.argv) > 1:
+    if len(sys.argv) > 2:
+        render_factor = int(sys.argv[2])
+        print(render_factor)
     source_path = Path(sys.argv[1])
     print(source_path)
+
     if source_path.is_file():
         source_path = sys.argv[1]
         print("plik")
+
     elif source_path.is_dir():
         print("folder")
         dir = source_path
@@ -24,29 +31,25 @@ if len(sys.argv) > 1:
                 source_path.append(file)
                 is_array = True
         print(source_path)
+
         if not is_array:
-            print("podaj ścieżkę do zdjęcia")
-            source_path = input()
+            raise ValueError('Provide an image url and try again.')
+
     else:
-        print("podaj ścieżkę do zdjęcia")
-        source_path = input()
+        raise ValueError('Provide an image url and try again.')
+
 else:
-    print("podaj ścieżkę do zdjęcia")
-    source_path = input()
-#for pcg in packages_required:
-#    if not is_package_inst(pcg):
-#        print(pcg)
-#        #subprocess.run([sys.executable, "-m","pip","install","-r","requirements-colab.txt"],check=True)
+    raise ValueError('Provide an image url and try again.')
 
-model_dir = Path('./models')
+model_dir = Path('src/models')
 model_dir.mkdir(parents=True, exist_ok=True)
-model_path = model_dir / 'ColorizeArtistic_gen.pth'
+model_dir_path = model_dir / 'ColorizeArtistic_gen.pth'
 
-if not model_path.exists():
+if not model_dir_path.exists():
     print("Pobieram model...")
     urllib.request.urlretrieve(
         "https://data.deepai.org/deoldify/ColorizeArtistic_gen.pth",
-        model_path
+        model_dir_path
     )
     print("Model pobrany.")
 
@@ -66,9 +69,8 @@ warnings.filterwarnings("ignore")
 
 import fastai
 from deoldify.visualize import *
-colorizer = get_image_colorizer(artistic=True)
+colorizer = get_image_colorizer(root_folder=Path("./src"),artistic=True)
 
-render_factor = 20#@param {type: "slider", min: 7, max: 40}
 watermarked = False#@param {type:"boolean"}
 
 if is_array:
@@ -76,20 +78,20 @@ if is_array:
         result_path = colorizer.plot_transformed_image(
             path=file,
             render_factor=render_factor,
-            results_dir=Path("./wyniki"),
+            results_dir=Path("src/wyniki"),
             post_process=True,
             watermarked=False
         )
-        print("zdjęcie pokolorowane jest pod adresem: "+str(result_path))
+        print("zdjęcie pokolorowane jest pod adresem: "+str(result_path)+":")
 
 elif source_path is not None and source_path !='':
     result_path = colorizer.plot_transformed_image(
         path=source_path,
         render_factor=render_factor,
-        results_dir=Path("./wyniki"),
+        results_dir=Path("src/wyniki"),
         post_process=True,
         watermarked=False
     )
-    print("zdjęcie pokolorowane jest pod adresem: "+str(result_path))
+    print("zdjęcie pokolorowane jest pod adresem: "+str(result_path)+":")
 else:
-    print('Provide an image url and try again.')
+    raise ValueError('Provide an image url and try again.')
