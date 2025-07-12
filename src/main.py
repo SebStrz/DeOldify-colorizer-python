@@ -82,7 +82,7 @@ if is_array:
             post_process=True,
             watermarked=False
         )
-        print("zdjęcie pokolorowane jest pod adresem: "+str(result_path)+":")
+        print("zdjęcie pokolorowane jest pod adresem:"+str(result_path)+":")
 
 elif source_path is not None and source_path !='':
     result_path = colorizer.plot_transformed_image(
@@ -92,6 +92,6 @@ elif source_path is not None and source_path !='':
         post_process=True,
         watermarked=False
     )
-    print("zdjęcie pokolorowane jest pod adresem: "+str(result_path)+":")
+    print("zdjęcie pokolorowane jest pod adresem:"+str(result_path)+":")
 else:
     raise ValueError('Provide an image url and try again.')

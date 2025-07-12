@@ -3,7 +3,9 @@ import tkinter as tk
 from tkinter import Label, Button, Frame, Scale
 from PIL import Image, ImageTk
 import os
+import platform
 import subprocess
+from pathlib import Path
 
 class Front:
     def __init__(self, root):
@@ -40,12 +42,13 @@ class Front:
         filepath = event.data.strip('{}')  # usuń nawiasy klamrowe jeśli są
         if os.path.isfile(filepath) and filepath.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp')):
             self.load_image(filepath,self.drop_label)
+            self.image_path = filepath
         else:
             self.drop_label.config(text="Nieobsługiwany format pliku")
 
     def load_image(self, path, node):
-        self.image_path = path
-        image = Image.open(path)
+        print(Path(path))
+        image = Image.open(Path(path))
         image.thumbnail((500, 350))
         self.tk_image = ImageTk.PhotoImage(image)
         node.config(image=self.tk_image)
@@ -65,7 +68,27 @@ class Front:
         print(path)
         self.result_image = Label(self.root)
         self.result_image.pack(pady=10)
-        self.load_image(path[3],self.result_image)
+        final_path = path[3].replace("\\","/")
+        self.final_path = Path(final_path).parent
+        self.load_image(final_path,self.result_image)
+
+        self.folder_button = Button(self.root,text="otwórz w eksploratorze",command=self.open_file)
+        self.folder_button.pack(pady=10)
+
+    def open_file(self):
+        if not self.final_path.exists():
+            print("Ścieżka nie istnieje:", self.final_path)
+            return
+
+        system = platform.system()
+        if system == "Windows":
+            os.startfile(self.final_path)
+        elif system == "Darwin":  # macOS
+            subprocess.Popen(["open", self.final_path])
+        elif system == "Linux":
+            subprocess.Popen(["xdg-open",self.final_path])
+        else:
+            print("Nieobsługiwany system:", system)
 
 if __name__ == "__main__":
     root = TkinterDnD.Tk()
